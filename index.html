@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockAPI Studio</title>
+    <!-- Material Design -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js"></script>
+    <style>
+        :root {
+            --background: #1a1b26;
+            --surface: #24283b;
+            --primary: #7c3aed;
+            --text: #c0caf5;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        nav {
+            background-color: var(--surface);
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: var(--surface);
+        }
+
+        .card-title {
+            color: white !important;
+        }
+
+        .method-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .method-get { background-color: #10B981; }
+        .method-post { background-color: #3B82F6; }
+        .method-put { background-color: #F59E0B; }
+        .method-delete { background-color: #EF4444; }
+        .method-patch { background-color: #8B5CF6; }
+
+        .endpoint {
+            font-family: monospace;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+
+        #editor-container {
+            height: 300px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .modal {
+            background-color: var(--surface);
+            color: var(--text);
+            max-height: 90%;
+        }
+
+        .modal .modal-footer {
+            background-color: var(--surface);
+        }
+
+        .tabs {
+            background-color: transparent;
+        }
+
+        .tabs .tab a {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .tabs .tab a:hover {
+            color: white;
+        }
+
+        .tabs .tab a.active {
+            color: white;
+        }
+
+        .tabs .indicator {
+            background-color: var(--primary);
+        }
+
+        .collection {
+            border: none;
+        }
+
+        .collection .collection-item {
+            background-color: rgba(0,0,0,0.2);
+            border: none;
+            margin: 4px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .collection .collection-item:hover {
+            transform: translateX(8px);
+        }
+
+        .btn {
+            background-color: var(--primary);
+        }
+
+        .btn:hover {
+            background-color: #6d28d9;
+        }
+
+        /* Toast styling */
+        #toast-container {
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo">MockAPI Studio</a>
+            <ul id="nav-mobile" class="right">
+                <li>
+                    <a class="btn waves-effect waves-light modal-trigger" href="#importModal" style="margin-right: 10px;">
+                        <i class="material-icons left">file_upload</i>Import APIs
+                    </a>
+                </li>
+                <li>
+                    <a class="btn waves-effect waves-light modal-trigger" href="#createModal">
+                        <i class="material-icons left">add</i>Create API
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row" id="apiList">
+            <!-- API cards will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <div id="createModal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4 id="modalTitle">Create New API</h4>
+            
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s3"><a class="active" href="#configTab">Configuration</a></li>
+                        <li class="tab col s3"><a href="#testTab">Test API</a></li>
+                    </ul>
+                </div>
+
+                <div id="configTab" class="col s12">
+                    <form id="apiForm" class="row">
+                        <input type="hidden" id="editApiId">
+                        
+                        <div class="input-field col s8">
+                            <input id="path" type="text" required>
+                            <label for="path">Endpoint Path</label>
+                        </div>
+                        
+                        <div class="input-field col s4">
+                            <select id="method">
+                                <option value="GET">GET</option>
+                                <option value="POST">POST</option>
+                                <option value="PUT">PUT</option>
+                                <option value="DELETE">DELETE</option>
+                                <option value="PATCH">PATCH</option>
+                            </select>
+                            <label>HTTP Method</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <select id="authType">
+                                <option value="none">No Authentication</option>
+                                <option value="bearer">Bearer Token</option>
+                                <option value="oauth">OAuth 2.0</option>
+                                <option value="api_key">API Key</option>
+                                <option value="custom_header">Custom Header</option>
+                            </select>
+                            <label>Authentication Type</label>
+                        </div>
+
+                        <div id="authFields" class="col s12">
+                            <!-- Dynamic auth fields -->
+                        </div>
+
+                        <div class="input-field col s12">
+                            <input id="statusCode" type="number" value="200">
+                            <label for="statusCode">Status Code</label>
+                        </div>
+
+                        <div class="col s12">
+                            <label>Response Body (JSON)</label>
+                            <div id="editor-container"></div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="testTab" class="col s12">
+                    <div class="endpoint">
+                        <span id="fullEndpoint">http://localhost:8000/api/endpoint</span>
+                        <button class="btn-floating btn-small waves-effect waves-light right" onclick="copyEndpoint()">
+                            <i class="material-icons">content_copy</i>
+                        </button>
+                    </div>
+
+                    <div id="authTest"></div>
+                    <div id="testResponse"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cancel</a>
+            <a href="#!" class="waves-effect waves-light btn" onclick="saveApi()">Save</a>
+        </div>
+    </div>
+
+    <!-- Add the import modal after the create modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <h4>Import APIs</h4>
+            <p class="grey-text">Import multiple APIs from a JSON file</p>
+            
+            <div class="file-field input-field">
+                <div class="btn">
+                    <span>File</span>
+                    <input type="file" id="importFile" accept=".json">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" placeholder="Upload a JSON file">
+                </div>
+            </div>
+
+            <div id="importPreview" style="display: none;">
+                <h5>Preview</h5>
+                <p><span id="apiCount" class="new badge blue" data-badge-caption="APIs">0</span></p>
+                <div class="collection" id="apiPreviewList"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cancel</a>
+            <a href="#!" class="waves-effect waves-light btn" id="importBtn" onclick="importApis()">Import</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
