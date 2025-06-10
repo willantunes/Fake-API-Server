@@ -1,0 +1,41 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-write --allow-env --unstable-kv src/main.tsx",
+    "debug": "deno run --unstable-kv --allow-all --allow-env --inspect src/main.tsx",
+    "debug-brk": "deno run --unstable-kv --allow-all --inspect-brk src/main.tsx",
+    "start": "deno run --allow-net --allow-read --allow-write --allow-env --unstable-kv src/main.tsx",
+    "compile": "deno compile --allow-net --allow-read --allow-write --allow-env --unstable-kv --target x86_64-unknown-linux-gnu -o dist/server src/main.ts",
+    "test": "deno test --allow-net --allow-read --allow-write --unstable-kv",
+    "deploy": "deployctl deploy --project=iusers --unstable src/main.tsx",
+    "deploy-ra5": "deployctl deploy --project=integrador-ra5 --unstable src/main.ts",
+    "kv-list": "deno run --allow-read --allow-env --unstable-kv scripts/kv-list.ts",
+    "kv-get": "deno run --allow-read --allow-env --unstable-kv scripts/kv-get.ts",
+    "kv-inspect-log": "deno run --allow-read --allow-env --unstable-kv scripts/kv-inspect-log.ts",
+    "kv-list-logs": "deno run --allow-read --allow-env --unstable-kv scripts/kv-list-logs.ts",
+    "tailwind": "deno run -A npm:tailwindcss@3 -c tailwind.config.cjs -i ./static/input.css -o ./static/style.css"
+  },
+  "imports": {
+    "oak/": "https://deno.land/x/oak@v17.1.4/",
+    "std/": "https://deno.land/std@0.202.0/",
+    "path-to-regexp": "https://deno.land/x/path_to_regexp@v6.2.1/index.ts",
+    "lz4": "https://deno.land/x/lz4@v0.1.3/mod.ts",
+    "ulid": "https://deno.land/x/ulid@v0.3.0/mod.ts",
+    "@hono/hono": "jsr:@hono/hono@^4",
+    "@hono/hono/": "jsr:@hono/hono@^4/",
+    "hono/": "https://deno.land/x/hono@v4.3.11/",
+    "hono/jsx": "https://deno.land/x/hono@v4.3.11/jsx/index.ts",
+    "hono/jsx/jsx-runtime": "https://deno.land/x/hono@v4.3.11/jsx/jsx-runtime.ts",
+    "hono/jsx-renderer": "https://deno.land/x/hono@v4.3.11/middleware/jsx-renderer/index.ts",
+    "hono/jsx-renderer/": "https://deno.land/x/hono@v4.3.11/middleware/jsx-renderer/"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx"
+  },
+  "deploy": {
+    "project": "iusers",
+    "exclude": [],
+    "include": [],
+    "entrypoint": "src/main.tsx"
+  }
+}

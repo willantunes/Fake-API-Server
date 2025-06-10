@@ -1,0 +1,43 @@
+flowchart TD
+    %% Camadas Principais
+    subgraph Aplicações_Cliente [Clientes]
+        direction LR
+        A[Front-end Web<br>(React, TypeScript, .NET, Mobile)]
+        B[Aplicação Legada]
+    end
+
+    %% Fluxo de Login
+    A -->|1. Login| Login[Auth0<br/>Universal Login]
+    B -->|1. Login| Login
+
+    %% Seleção de Tenant
+    Login -->|2. Autentica| TenantDecision{Qual Tenant?}
+    TenantDecision -->|Interno| TenantCorp[Auth0 Tenant Corporativo]
+    TenantDecision -->|Externo| TenantCust[Auth0 Tenant Clientes]
+
+    %% Emissão de Tokens
+    TenantCorp -->|3. Emite ID + Access Tokens| A
+    TenantCust -->|3. Emite ID + Access Tokens| A
+
+    %% Chamadas à API Gateway
+    A -->|4. API Request com JWT| Gateway[API Gateway<br/>de Autenticação]
+    Gateway -->|5. Valida & Introspecção| TenantCorp & TenantCust
+    Gateway -->|6. Enforce RBAC| RBAC[Middleware<br/>de Autorização]
+    RBAC -->|7. Encaminha| Internals[Microserviços & DBs]
+
+    %% Operações de Gerenciamento
+    Admin[Administrador] -->|Mgmt Ops| Gateway
+    Gateway -->|Mgmt API| TenantCorp & TenantCust
+
+    %% Estilização
+    classDef client fill:#e0f7fa,stroke:#0284c7,stroke-width:2px,color:#0369a1;
+    classDef identity fill:#fff3e0,stroke:#fb8c00,stroke-width:2px,color:#e65100;
+    classDef gateway fill:#e8eaf6,stroke:#3949ab,stroke-width:2px,color:#1a237e;
+    classDef service fill:#f1f8e9,stroke:#7cb342,stroke-width:2px,color:#33691e;
+
+    class A,B client;
+    class Login client;
+    class TenantCorp,TenantCust identity;
+    class Gateway gateway;
+    class RBAC,Internals,Admin service;
+    class Admin service; 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Fluxo de Integração Auth0" id="auth-integration-flow">
+    <mxGraphModel dx="1280" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- Cliente inicia login -->
+        <mxCell id="2" value="Client App" style="rounded=1;fillColor=#e0f7fa;strokeColor=#0284c7;fontColor=#0369a1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="GET /login" style="rounded=1;fillColor=#fff9c4;strokeColor=#fbc02d;fontColor=#f57f17;" vertex="1" parent="1">
+          <mxGeometry x="220" y="40" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="Redirect to Auth0" style="rounded=1;fillColor=#ffecb3;strokeColor=#ffa000;fontColor=#e65100;" vertex="1" parent="1">
+          <mxGeometry x="380" y="40" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <!-- Auth0 Universal Login -->
+        <mxCell id="5" value="Auth0 Universal Login" style="ellipse;whiteSpace=wrap;fillColor=#fff3e0;strokeColor=#fb8c00;fontColor=#e65100;" vertex="1" parent="1">
+          <mxGeometry x="580" y="30" width="160" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" value="Callback URL \n(code)" style="rounded=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontColor=#4a148c;" vertex="1" parent="1">
+          <mxGeometry x="780" y="40" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" value="POST /oauth/token" style="rounded=1;fillColor=#c5cae9;strokeColor=#3949ab;fontColor=#1a237e;" vertex="1" parent="1">
+          <mxGeometry x="960" y="40" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="8" value="Tokens (Access + Refresh)" style="rounded=1;fillColor=#dcedc8;strokeColor=#558b2f;fontColor=#33691e;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="40" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <!-- Chamada à API protegida -->
+        <mxCell id="9" value="GET /api/resource" style="rounded=1;fillColor=#e8eaf6;strokeColor=#3949ab;fontColor=#1a237e;" vertex="1" parent="1">
+          <mxGeometry x="200" y="180" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="10" value="Valida Token &amp; RBAC" style="rounded=1;fillColor=#e0f7fa;strokeColor=#0284c7;fontColor=#0369a1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="180" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" value="Service Response" style="rounded=1;fillColor=#f1f8e9;strokeColor=#7cb342;fontColor=#33691e;" vertex="1" parent="1">
+          <mxGeometry x="640" y="180" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <!-- Conexões -->
+        <mxCell id="e1" edge="1" source="2" target="3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#0284c7;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" edge="1" source="3" target="4" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#0284c7;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" edge="1" source="4" target="5" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#ffa000;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" edge="1" source="5" target="6" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#fb8c00;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" edge="1" source="6" target="7" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#8e24aa;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6" edge="1" source="7" target="8" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#3949ab;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7" edge="1" source="8" target="9" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#558b2f;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e8" edge="1" source="9" target="10" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#0284c7;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e9" edge="1" source="10" target="11" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#7cb342;rounded=0;" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile> 
