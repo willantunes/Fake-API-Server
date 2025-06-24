@@ -1,0 +1,30 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Code Style & Quality
+- Always use TypeScript over JavaScript
+- Prefer const over let, avoid var
+- Use meaningful variable names, no single letters except for loops
+- Add JSDoc comments for functions and complex logic
+- Use explicit return types for functions
+
+# HTMX Specific
+- Always validate HTMX attributes (hx-get, hx-post, etc.)
+- Use hx-target and hx-swap explicitly
+- Include proper error handling with hx-on
+- Prefer semantic HTML elements
+- Use CSS classes instead of inline styles
+# Security & Best Practices
+- Never hardcode API keys or secrets
+- Validate all user inputs
+- Use parameterized queries for database operations
+- Implement proper error boundaries
+- Add loading states for async operations
+
+# Project Structure
+- Keep components small and focused
+- Use consistent file naming (kebab-case)
+- Group related files in feature folders
+- Separate business logic from UI components

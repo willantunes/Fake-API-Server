@@ -1,0 +1,9 @@
+{
+    "cursor.cpp.autocomplete": true,
+    "cursor.general.enableAutoSave": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "typescript.preferences.strict": true
+  }
